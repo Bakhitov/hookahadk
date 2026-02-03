@@ -95,10 +95,10 @@ export function Footer({ labels }: FooterProps) {
               <div className="flex items-start gap-3">
                 <Mail size={20} className="text-[#9ccf2a] mt-1 flex-shrink-0" />
                 <a
-                  href="mailto:info@adkk.kz"
+                  href="mailto:info@adk.kz"
                   className="text-sm text-white/70 hover:text-[#9ccf2a] transition-colors"
                 >
-                  info@adkk.kz
+                  info@adk.kz
                 </a>
               </div>
               <div className="flex items-start gap-3">

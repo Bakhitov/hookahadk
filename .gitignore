@@ -1,6 +1,9 @@
-node_modules
-dist
-.DS_Store
-*.log
+node_modules/
+dist/
 .env
 .env.*
+!.env.example
+mailserver/docker-data/
+mailserver/mailserver.env
+*.log
+.DS_Store

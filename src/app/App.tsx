@@ -21,6 +21,14 @@ import {
 
 export default function App() {
   const [lang, setLang] = useState<Lang>("ru");
+  const [formData, setFormData] = useState({
+    orgName: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [formError, setFormError] = useState<string | null>(null);
   const t = translations[lang];
 
   useEffect(() => {
@@ -33,6 +41,37 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("lang", lang);
   }, [lang]);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setFormStatus("sending");
+    setFormError(null);
+
+    try {
+      const endpoint = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orgName: formData.orgName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          message: formData.message.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.error || "Failed to send request");
+      }
+
+      setFormStatus("success");
+      setFormData({ orgName: "", email: "", phone: "", message: "" });
+    } catch (error) {
+      setFormStatus("error");
+      setFormError(error instanceof Error ? error.message : "Failed to send request");
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
@@ -556,7 +595,7 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div>
                   <h3 className="text-2xl font-bold mb-6">{t.formTitle}</h3>
-                  <form className="space-y-6">
+                  <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold mb-2">
                         {t.formOrgLabel}
@@ -564,8 +603,13 @@ export default function App() {
                       <input
                         type="text"
                         id="name"
+                        value={formData.orgName}
+                        onChange={(event) =>
+                          setFormData((prev) => ({ ...prev, orgName: event.target.value }))
+                        }
                         className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors rounded-lg"
                         placeholder={t.formOrgPlaceholder}
+                        required
                       />
                     </div>
                     <div>
@@ -575,8 +619,13 @@ export default function App() {
                       <input
                         type="email"
                         id="email"
+                        value={formData.email}
+                        onChange={(event) =>
+                          setFormData((prev) => ({ ...prev, email: event.target.value }))
+                        }
                         className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors rounded-lg"
                         placeholder={t.formEmailPlaceholder}
+                        required
                       />
                     </div>
                     <div>
@@ -586,8 +635,13 @@ export default function App() {
                       <input
                         type="tel"
                         id="phone"
+                        value={formData.phone}
+                        onChange={(event) =>
+                          setFormData((prev) => ({ ...prev, phone: event.target.value }))
+                        }
                         className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors rounded-lg"
                         placeholder={t.formPhonePlaceholder}
+                        required
                       />
                     </div>
                     <div>
@@ -597,16 +651,28 @@ export default function App() {
                       <textarea
                         id="message"
                         rows={4}
+                        value={formData.message}
+                        onChange={(event) =>
+                          setFormData((prev) => ({ ...prev, message: event.target.value }))
+                        }
                         className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors resize-none rounded-lg"
                         placeholder={t.formMsgPlaceholder}
+                        required
                       ></textarea>
                     </div>
                     <button
                       type="submit"
+                      disabled={formStatus === "sending"}
                       className="w-full px-8 py-4 rounded-lg bg-[#cafe3c] text-black hover:bg-[#b8ee2c] transition-colors font-semibold"
                     >
-                      {t.formSubmit}
+                      {formStatus === "sending" ? "Отправка..." : t.formSubmit}
                     </button>
+                    {formStatus === "success" && (
+                      <p className="text-sm text-green-600">Заявка отправлена. Мы свяжемся с вами.</p>
+                    )}
+                    {formStatus === "error" && (
+                      <p className="text-sm text-red-600">{formError || "Ошибка отправки"}</p>
+                    )}
                   </form>
                 </div>
 
@@ -639,7 +705,7 @@ export default function App() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">{t.contactEmailTitle}</h4>
-                        <p className="text-muted-foreground">info@adkk.kz</p>
+                        <p className="text-muted-foreground">info@adk.kz</p>
                       </div>
                     </div>
                   </div>
