@@ -62,7 +62,7 @@ function validatePayload(payload) {
   if (!orgName || orgName.trim().length < 2) return "Organization name is required";
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return "Valid email is required";
   if (!phone || phone.trim().length < 6) return "Phone is required";
-  if (!message || message.trim().length < 3) return "Message is required";
+  // message is optional
   return null;
 }
 
@@ -90,11 +90,12 @@ app.post("/api/contact", async (req, res) => {
   const { orgName, email, phone, message } = req.body;
 
   try {
+    const safeMessage = message && message.trim().length > 0 ? message : "—";
     await transporter.sendMail({
       from,
       to,
       subject: "Новая заявка с сайта",
-      text: `Организация: ${orgName}\nEmail: ${email}\nТелефон: ${phone}\nСообщение: ${message}`,
+      text: `Организация: ${orgName}\nEmail: ${email}\nТелефон: ${phone}\nСообщение: ${safeMessage}`,
       replyTo: email,
     });
 

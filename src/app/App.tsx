@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/app/components/ui/accordion";
 import atamekenLogo from "../public/atameken.png";
 import gerbLogo from "../public/gerb.png";
 import greenMini from "@/public/greenmini.svg";
@@ -16,7 +17,8 @@ import {
   ChevronRight,
   CheckCircle2,
   Mail,
-  Phone
+  Phone,
+  Instagram
 } from 'lucide-react';
 
 export default function App() {
@@ -29,7 +31,34 @@ export default function App() {
   });
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [formError, setFormError] = useState<string | null>(null);
+  const [formFieldErrors, setFormFieldErrors] = useState({
+    orgName: false,
+    email: false,
+    phone: false,
+    message: false,
+  });
   const t = translations[lang];
+  const activityItems = [
+    { id: "a1", title: t.activity1Title, text: t.activity1Text, icon: Handshake },
+    { id: "a2", title: t.activity2Title, text: t.activity2Text, icon: FileCheck },
+    { id: "a3", title: t.activity3Title, text: t.activity3Text, icon: Users },
+    { id: "a4", title: t.activity4Title, text: t.activity4Text, icon: GraduationCap },
+  ];
+  const faqItems = [
+    { id: "faq-1", question: t.faqQ1, answer: t.faqA1 },
+    { id: "faq-2", question: t.faqQ2, answer: t.faqA2 },
+    { id: "faq-3", question: t.faqQ3, answer: t.faqA3 },
+    { id: "faq-4", question: t.faqQ4, answer: t.faqA4 },
+  ];
+  const activityBgVariants = [
+    "bg-gradient-to-br from-[#cafe3c]/35 via-[#e7ff9a]/10 to-background",
+    "bg-gradient-to-br from-[#9ccf2a]/30 via-[#cafe3c]/10 to-background",
+    "bg-gradient-to-br from-[#7ad7ff]/25 via-[#cafe3c]/10 to-background",
+    "bg-gradient-to-br from-[#ffd86b]/25 via-[#cafe3c]/10 to-background",
+  ];
+  const activityOffsetHigh = 0;
+  const activityOffsetLow = 140;
+  const activityOverlapStep = 0;
 
   useEffect(() => {
     const stored = localStorage.getItem("lang");
@@ -46,6 +75,35 @@ export default function App() {
     event.preventDefault();
     setFormStatus("sending");
     setFormError(null);
+    setFormFieldErrors({ orgName: false, email: false, phone: false, message: false });
+
+    const validationErrors: string[] = [];
+    const orgNameValid = formData.orgName.trim().length >= 2;
+    const emailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email.trim());
+    const phoneValid = formData.phone.trim().length >= 6;
+    const messageValid = true;
+
+    if (!orgNameValid) {
+      validationErrors.push(`- ${t.formOrgLabel}`);
+    }
+    if (!emailValid) {
+      validationErrors.push(`- ${t.formEmailLabel}`);
+    }
+    if (!phoneValid) {
+      validationErrors.push(`- ${t.formPhoneLabel}`);
+    }
+    // message is optional
+    if (validationErrors.length > 0) {
+      setFormStatus("error");
+      setFormError(`Заполните обязательные поля:\n${validationErrors.join("\n")}`);
+      setFormFieldErrors({
+        orgName: !orgNameValid,
+        email: !emailValid,
+        phone: !phoneValid,
+        message: false,
+      });
+      return;
+    }
 
     try {
       const endpoint = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
@@ -138,7 +196,10 @@ export default function App() {
                         className="h-14 w-14 object-contain"
                         loading="lazy"
                       />
-                      <span>{t.heroAccreditedMinistry}</span>
+                      <div className="flex flex-col">
+                        <span>{t.heroAccreditedMinistry}</span>
+                        <span>{t.heroAccreditedMinistry2}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -153,35 +214,6 @@ export default function App() {
               </div>
 
               <div className="relative lg:pt-8"></div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="py-16 bg-foreground text-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-[#cafe3c] rounded-lg mx-auto mb-4 flex items-center justify-center">
-                  <Building2 size={40} className="text-black" />
-                </div>
-                <h3 className="text-4xl font-bold mb-2">100+</h3>
-                <p className="text-background/70">{t.stats1}</p>
-              </div>
-              <div className="text-center">
-                <div className="w-20 h-20 bg-[#cafe3c] rounded-lg mx-auto mb-4 flex items-center justify-center">
-                  <Users size={40} className="text-black" />
-                </div>
-                <h3 className="text-4xl font-bold mb-2">500+</h3>
-                <p className="text-background/70">{t.stats2}</p>
-              </div>
-              <div className="text-center">
-                <div className="w-20 h-20 bg-[#cafe3c] rounded-lg mx-auto mb-4 flex items-center justify-center">
-                  <GraduationCap size={40} className="text-black" />
-                </div>
-                <h3 className="text-4xl font-bold mb-2">1000+</h3>
-                <p className="text-background/70">{t.stats3}</p>
-              </div>
             </div>
           </div>
         </section>
@@ -363,41 +395,56 @@ export default function App() {
         </section>
 
         {/* Activities Section */}
-        <section id="activities" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <section id="activities" className="pt-12 pb-[30px] px-4 sm:px-6 lg:px-8 bg-background -mt-10 lg:-mt-16 min-h-[520px] lg:min-h-[720px]">
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center mb-16 relative z-10">
               <div className="w-16 h-1 bg-[#cafe3c] mx-auto mb-6"></div>
               <h2 className="text-4xl font-bold text-foreground mb-4">{t.activitiesTitle}</h2>
             </div>
 
-            <div className="space-y-6 relative z-10">
-              <div className="border-l-4 border-[#cafe3c] pl-8 py-6 hover:bg-muted transition-colors">
-                <h3 className="text-xl font-bold mb-3">{t.activity1Title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.activity1Text}
-                </p>
-              </div>
-
-              <div className="border-l-4 border-[#cafe3c] pl-8 py-6 hover:bg-muted transition-colors">
-                <h3 className="text-xl font-bold mb-3">{t.activity2Title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.activity2Text}
-                </p>
-              </div>
-
-              <div className="border-l-4 border-[#cafe3c] pl-8 py-6 hover:bg-muted transition-colors">
-                <h3 className="text-xl font-bold mb-3">{t.activity3Title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.activity3Text}
-                </p>
-              </div>
-
-              <div className="border-l-4 border-[#cafe3c] pl-8 py-6 hover:bg-muted transition-colors">
-                <h3 className="text-xl font-bold mb-3">{t.activity4Title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {t.activity4Text}
-                </p>
-              </div>
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-center gap-6 lg:gap-0 mt-20 lg:mt-24">
+              {activityItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={`activity-d-${item.id}`}
+                    className="relative flex items-center justify-center translate-y-0 lg:translate-y-[var(--offset)] ml-0 lg:ml-[var(--overlap)]"
+                    style={{
+                      ["--offset" as never]:
+                        index % 2 === 0
+                          ? `${activityOffsetHigh}px`
+                          : `${activityOffsetLow}px`,
+                      ["--overlap" as never]:
+                        index === 0 ? "0px" : `-${activityOverlapStep}px`,
+                      zIndex: activityItems.length - index,
+                    }}
+                  >
+                    <div
+                      className={[
+                        "absolute w-20 h-20 rounded-full bg-[#cafe3c]/20 blur-2xl",
+                        index % 2 === 0 ? "-top-6 -left-2" : "-bottom-6 -right-2",
+                      ].join(" ")}
+                    />
+                    <div
+                      className={[
+                        "relative w-[220px] sm:w-[240px] lg:w-[260px] aspect-square shrink-0",
+                        "rotate-45 rounded-[22px] border-2",
+                        "shadow-[0_22px_40px_-30px_rgba(0,0,0,0.65)]",
+                        index % 2 === 0 ? "border-[#cafe3c]/60 bg-background" : "border-[#9ccf2a]/60 bg-muted",
+                      ].join(" ")}
+                    >
+                      <div className="absolute inset-0 rounded-[20px] border border-[#cafe3c]/30"></div>
+                      <div className="absolute inset-0 -rotate-45 flex flex-col items-center justify-center px-6 text-center">
+                        <div className="w-12 h-12 rounded-full bg-[#cafe3c] flex items-center justify-center text-black mb-3">
+                          <Icon size={20} />
+                        </div>
+                        <h3 className="text-sm font-bold uppercase tracking-wide">{item.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-snug mt-2">{item.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -579,6 +626,28 @@ export default function App() {
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <section className="pb-20 px-4 sm:px-6 lg:px-8 bg-background">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="w-16 h-1 bg-[#cafe3c] mx-auto mb-6"></div>
+              <h2 className="text-4xl font-bold text-foreground mb-4">{t.faqTitle}</h2>
+              <p className="text-muted-foreground">{t.faqIntro}</p>
+            </div>
+
+            <div className="p-6 sm:p-8">
+              <Accordion type="single" collapsible className="w-full space-y-2">
+                {faqItems.map((item) => (
+                  <AccordionItem key={item.id} value={item.id} className="rounded-lg bg-muted/40 px-4">
+                    <AccordionTrigger className="text-left font-semibold">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">{item.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section id="contacts" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-muted to-background">
           <div className="max-w-5xl mx-auto">
@@ -598,7 +667,7 @@ export default function App() {
                   <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold mb-2">
-                        {t.formOrgLabel}
+                        {t.formOrgLabel} <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="text"
@@ -607,14 +676,18 @@ export default function App() {
                         onChange={(event) =>
                           setFormData((prev) => ({ ...prev, orgName: event.target.value }))
                         }
-                        className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors rounded-lg"
+                        className={[
+                          "w-full px-4 py-3 border-2 focus:outline-none transition-colors rounded-lg",
+                          formFieldErrors.orgName ? "border-red-500" : "border-border",
+                          "focus:border-[#cafe3c]",
+                        ].join(" ")}
                         placeholder={t.formOrgPlaceholder}
                         required
                       />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-semibold mb-2">
-                        {t.formEmailLabel}
+                        {t.formEmailLabel} <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="email"
@@ -623,14 +696,18 @@ export default function App() {
                         onChange={(event) =>
                           setFormData((prev) => ({ ...prev, email: event.target.value }))
                         }
-                        className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors rounded-lg"
+                        className={[
+                          "w-full px-4 py-3 border-2 focus:outline-none transition-colors rounded-lg",
+                          formFieldErrors.email ? "border-red-500" : "border-border",
+                          "focus:border-[#cafe3c]",
+                        ].join(" ")}
                         placeholder={t.formEmailPlaceholder}
                         required
                       />
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-sm font-semibold mb-2">
-                        {t.formPhoneLabel}
+                        {t.formPhoneLabel} <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="tel"
@@ -639,7 +716,11 @@ export default function App() {
                         onChange={(event) =>
                           setFormData((prev) => ({ ...prev, phone: event.target.value }))
                         }
-                        className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors rounded-lg"
+                        className={[
+                          "w-full px-4 py-3 border-2 focus:outline-none transition-colors rounded-lg",
+                          formFieldErrors.phone ? "border-red-500" : "border-border",
+                          "focus:border-[#cafe3c]",
+                        ].join(" ")}
                         placeholder={t.formPhonePlaceholder}
                         required
                       />
@@ -657,7 +738,6 @@ export default function App() {
                         }
                         className="w-full px-4 py-3 border-2 border-border focus:border-[#cafe3c] focus:outline-none transition-colors resize-none rounded-lg"
                         placeholder={t.formMsgPlaceholder}
-                        required
                       ></textarea>
                     </div>
                     <button
@@ -671,7 +751,9 @@ export default function App() {
                       <p className="text-sm text-green-600">Заявка отправлена. Мы свяжемся с вами.</p>
                     )}
                     {formStatus === "error" && (
-                      <p className="text-sm text-red-600">{formError || "Ошибка отправки"}</p>
+                      <p className="text-sm text-red-600 whitespace-pre-line">
+                        {formError || "Ошибка отправки"}
+                      </p>
                     )}
                   </form>
                 </div>
@@ -708,6 +790,23 @@ export default function App() {
                         <p className="text-muted-foreground">info@adk.kz</p>
                       </div>
                     </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-[#cafe3c] rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Instagram size={24} className="text-black" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">{t.contactInstagramTitle}</h4>
+                        <a
+                          href="https://www.instagram.com/adk_kazakhstan"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-muted-foreground hover:text-[#9ccf2a] transition-colors underline underline-offset-4"
+                        >
+                          {t.contactInstagramHandle}
+                        </a>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="mt-8 p-6 rounded-lg border-2 border-[#cafe3c] text-foreground">
@@ -732,6 +831,8 @@ export default function App() {
             footerPartnership: t.footerPartnership,
             footerContacts: t.footerContacts,
             contactAddress: t.contactAddress,
+            contactInstagramTitle: t.contactInstagramTitle,
+            contactInstagramHandle: t.contactInstagramHandle,
             footerCopyright: t.footerCopyright,
             footerPrivacy: t.footerPrivacy,
             footerDocs: t.footerDocs,

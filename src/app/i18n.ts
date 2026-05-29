@@ -20,6 +20,8 @@ export const translations = {
     heroAccreditedAtameken: "НПП «Атамекен»",
     heroAccreditedMinistry:
       "Министерством национальной экономики Республики Казахстан",
+    heroAccreditedMinistry2:
+      "Министерством здравоохранения Республики Казахстан",
     ctaContact: "Связаться с нами",
     ctaLearn: "Узнать больше",
     stats1: "Кальянных заведений",
@@ -27,9 +29,9 @@ export const translations = {
     stats3: "Обученных мастеров",
     aboutTitle: "Об Ассоциации",
     aboutText1:
-      "Ассоциация дымной культуры Казахстана создана в целях системного развития кальянной индустрии и консолидации участников отрасли.",
+      "Ассоциация дымной культуры Казахстана была создана целях системного развития кальянной индустрии и консолидации участников отрасли.",
     aboutText2:
-      "Ассоциация официально зарегистрирована в Республике Казахстан, не является коммерческой организацией и не осуществляет предпринимательскую деятельность.",
+      "Ассоциация зарегистрирована на официальном уровне в Республике Казахстан, не является коммерческой организацией и не осуществляет предпринимательскую деятельность.",
     aboutBadge1: "Официальная регистрация",
     aboutBadge2: "Аккредитация НПП",
     aboutForWhom: "Для кого действует",
@@ -107,6 +109,20 @@ export const translations = {
     partnershipGov1: "НПП «Атамекен»",
     partnershipGov2: "Министерство национальной экономики РК",
     partnershipGov3: "Министерство здравоохранения РК",
+    faqTitle: "FAQ",
+    faqIntro: "Ответы на частые вопросы об Ассоциации и порядке взаимодействия",
+    faqQ1: "Кто может подать заявку на вступление?",
+    faqA1:
+      "Заявки принимаются от юридических лиц (заведений). Физические лица могут обратиться через представителей заведений.",
+    faqQ2: "Как связаться с Ассоциацией?",
+    faqA2:
+      "Вы можете написать нам через форму обратной связи, по телефону или через Instagram.",
+    faqQ3: "Какие документы нужны для рассмотрения заявки?",
+    faqA3:
+      "Базовый пакет включает реквизиты организации и контактные данные. При необходимости мы запросим дополнительные документы.",
+    faqQ4: "Какие направления деятельности Ассоциации основные?",
+    faqA4:
+      "Координация отрасли, профессиональные стандарты, подготовка персонала и консультационное сопровождение.",
     contactsTitle: "Контакты и информация",
     contactsIntro:
       "Для получения информации о деятельности Ассоциации и порядке взаимодействия свяжитесь с нами удобным способом",
@@ -125,13 +141,15 @@ export const translations = {
     contactAddress: "Республика Казахстан, г. Алматы",
     contactPhoneTitle: "Телефон",
     contactEmailTitle: "Email",
+    contactInstagramTitle: "Instagram",
+    contactInstagramHandle: "@adk_kazakhstan",
     infoTitle: "Важная информация",
     infoText:
-      "Возможна подача заявки от юридических лиц (заведений). Физические лица обслуживаются через представителей заведений.",
+      "Возможна подача заявки от юридических лиц (заведений). Физические лица обслуживаются через представителей заведений. Если Вы являетесь физическим лицом, просим Вас обратиться к представителям заведения для рассмотрения заявки.",
     footerLinksTitle: "Быстрые ссылки",
     footerAbout: "Об Ассоциации",
     footerAboutText:
-      "Официально зарегистрированное отраслевое объединение, аккредитованное НПП «Атамекен» и Министерством национальной экономики РК.",
+      "Официально зарегистрированное отраслевое объединение, аккредитованное НПП «Атамекен», Министерством национальной экономики РК и Министерством здравоохранения РК.",
     footerGoals: "Цели и задачи",
     footerActivities: "Направления деятельности",
     footerPartnership: "Партнёрство",
@@ -159,6 +177,8 @@ export const translations = {
     heroAccreditedAtameken: "«Атамекен» ҰКП",
     heroAccreditedMinistry:
       "Қазақстан Республикасы Ұлттық экономика министрлігі",
+    heroAccreditedMinistry2:
+      "Қазақстан Республикасы Денсаулық сақтау министрлігі",
     ctaContact: "Бізбен байланысу",
     ctaLearn: "Толығырақ",
     stats1: "Кальян орындары",
@@ -242,6 +262,20 @@ export const translations = {
     partnershipGov1: "«Атамекен» ҰКП",
     partnershipGov2: "ҚР Ұлттық экономика министрлігі",
     partnershipGov3: "ҚР Денсаулық сақтау министрлігі",
+    faqTitle: "FAQ",
+    faqIntro: "Қауымдастық және өзара әрекеттесу тәртібі туралы жиі қойылатын сұрақтарға жауаптар",
+    faqQ1: "Кімдер өтінім бере алады?",
+    faqA1:
+      "Өтінімдер заңды тұлғалардан (мекемелерден) қабылданады. Жеке тұлғалар мекеме өкілдері арқылы жүгіне алады.",
+    faqQ2: "Қауымдастықпен қалай байланысуға болады?",
+    faqA2:
+      "Кері байланыс формасы, телефон немесе Instagram арқылы жаза аласыз.",
+    faqQ3: "Өтінімді қарастыру үшін қандай құжаттар қажет?",
+    faqA3:
+      "Негізгі пакетке ұйымның деректемелері мен байланыс деректері кіреді. Қажет болса қосымша құжаттар сұраймыз.",
+    faqQ4: "Қауымдастықтың негізгі бағыттары қандай?",
+    faqA4:
+      "Саланы үйлестіру, кәсіби стандарттар, персоналды даярлау және консультациялық сүйемелдеу.",
     contactsTitle: "Байланыс және ақпарат",
     contactsIntro:
       "Қауымдастық қызметі және өзара әрекеттесу тәртібі туралы ақпарат алу үшін бізге ыңғайлы тәсілмен хабарласыңыз",
@@ -260,13 +294,15 @@ export const translations = {
     contactAddress: "Қазақстан Республикасы, Алматы қ.",
     contactPhoneTitle: "Телефон",
     contactEmailTitle: "Email",
+    contactInstagramTitle: "Instagram",
+    contactInstagramHandle: "@adk_kazakhstan",
     infoTitle: "Маңызды ақпарат",
     infoText:
       "Заңды тұлғалардан (мекемелерден) өтінім қабылданады. Жеке тұлғалар мекеме өкілдері арқылы қызмет көрсетіледі.",
     footerLinksTitle: "Жылдам сілтемелер",
     footerAbout: "Қауымдастық туралы",
     footerAboutText:
-      "«Атамекен» ҰКП және ҚР Ұлттық экономика министрлігі аккредиттеген ресми тіркелген салалық бірлестік.",
+      "«Атамекен» ҰКП, ҚР Ұлттық экономика министрлігі және ҚР Денсаулық сақтау министрлігі аккредиттеген ресми тіркелген салалық бірлестік.",
     footerGoals: "Мақсаттар мен міндеттер",
     footerActivities: "Қызмет бағыттары",
     footerPartnership: "Әріптестік",
@@ -294,6 +330,8 @@ export const translations = {
     heroAccreditedAtameken: "Atameken NCE",
     heroAccreditedMinistry:
       "Ministry of National Economy of the Republic of Kazakhstan",
+    heroAccreditedMinistry2:
+      "Ministry of Healthcare of the Republic of Kazakhstan",
     ctaContact: "Contact Us",
     ctaLearn: "Learn More",
     stats1: "Hookah venues",
@@ -378,6 +416,20 @@ export const translations = {
     partnershipGov1: "Atameken NCE",
     partnershipGov2: "Ministry of National Economy of RK",
     partnershipGov3: "Ministry of Healthcare of RK",
+    faqTitle: "FAQ",
+    faqIntro: "Answers to frequently asked questions about the Association and cooperation",
+    faqQ1: "Who can submit an application?",
+    faqA1:
+      "Applications are accepted from legal entities (venues). Individuals can apply through venue representatives.",
+    faqQ2: "How can I contact the Association?",
+    faqA2:
+      "You can reach us via the contact form, by phone, or through Instagram.",
+    faqQ3: "What documents are required for review?",
+    faqA3:
+      "The basic package includes company details and contact information. Additional documents may be requested if needed.",
+    faqQ4: "What are the main activity areas?",
+    faqA4:
+      "Industry coordination, professional standards, staff training, and advisory support.",
     contactsTitle: "Contacts and Information",
     contactsIntro:
       "For information about the Association and interaction procedures, contact us in a convenient way",
@@ -396,13 +448,15 @@ export const translations = {
     contactAddress: "Republic of Kazakhstan, Almaty",
     contactPhoneTitle: "Phone",
     contactEmailTitle: "Email",
+    contactInstagramTitle: "Instagram",
+    contactInstagramHandle: "@adk_kazakhstan",
     infoTitle: "Important Information",
     infoText:
       "Applications are accepted from legal entities (venues). Individuals are served via venue representatives.",
     footerLinksTitle: "Quick Links",
     footerAbout: "About the Association",
     footerAboutText:
-      "An officially registered industry association accredited by Atameken NCE and the Ministry of National Economy of RK.",
+      "An officially registered industry association accredited by Atameken NCE, the Ministry of National Economy, and the Ministry of Healthcare of the Republic of Kazakhstan.",
     footerGoals: "Goals and Objectives",
     footerActivities: "Areas of Activity",
     footerPartnership: "Partnership",

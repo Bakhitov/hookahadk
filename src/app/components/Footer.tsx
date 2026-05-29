@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram } from "lucide-react";
 import whiteLogo from "@/public/whitefull.svg";
 
 type FooterProps = {
@@ -13,6 +13,8 @@ type FooterProps = {
     footerPartnership: string;
     footerContacts: string;
     contactAddress: string;
+    contactInstagramTitle: string;
+    contactInstagramHandle: string;
     footerCopyright: string;
     footerPrivacy: string;
     footerDocs: string;
@@ -108,6 +110,17 @@ export function Footer({ labels }: FooterProps) {
                   className="text-sm text-white/70 hover:text-[#9ccf2a] transition-colors"
                 >
                   +7 (700) 000-00-00
+                </a>
+              </div>
+              <div className="flex items-start gap-3">
+                <Instagram size={20} className="text-[#9ccf2a] mt-1 flex-shrink-0" />
+                <a
+                  href="https://www.instagram.com/adk_kazakhstan"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-white/70 hover:text-[#9ccf2a] transition-colors underline underline-offset-4"
+                >
+                  {labels.contactInstagramHandle}
                 </a>
               </div>
             </div>

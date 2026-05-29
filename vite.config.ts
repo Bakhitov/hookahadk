@@ -19,4 +19,15 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  server: {
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: true,
+    allowedHosts: ['adkk.kz', 'www.adkk.kz'],
+    hmr: {
+      host: 'adkk.kz',
+      protocol: 'wss',
+      clientPort: 443,
+    },
+  },
 })
